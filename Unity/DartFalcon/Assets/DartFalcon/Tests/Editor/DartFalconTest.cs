@@ -3,11 +3,19 @@ using System.Diagnostics;
 namespace DartFalcon {
   public class DartFalconTest {
     public class EnvironmentConfig : Config {
+#if UNITY_EDITOR || UNITY_STANDALONE
       public string LocalConfigPath;
+#else
+      public string LocalConfigPath {get; set;}
+#endif
     }
 
     public class DeviceConfig : Config {
+#if UNITY_EDITOR || UNITY_STANDALONE
       public string Name;
+#else
+      public string Name {get; set;}
+#endif
     }
 
     static public void ConfigTest(string rootPath){

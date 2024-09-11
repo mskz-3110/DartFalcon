@@ -1,25 +1,27 @@
+using System;
 using System.Reflection;
 
 namespace DartFalcon {
   public class Config {
-    private FilePath m_FilePath;
-    public FilePath FilePath {
-      get => m_FilePath;
-      set => m_FilePath = value;
-    }
+    [NonSerialized]
+    public FilePath FilePath;
 
     public bool Exists(){
-      return m_FilePath.Exists();
+      return FilePath.Exists();
     }
 
     public void Set(Config config){
-      foreach (FieldInfo fieldInfo in config.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance)){
+      Type type = config.GetType();
+      foreach (FieldInfo fieldInfo in type.GetFields(BindingFlags.Public | BindingFlags.Instance)){
         fieldInfo.SetValue(this, fieldInfo.GetValue(config));
+      }
+      foreach (PropertyInfo propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance)){
+        propertyInfo.SetValue(this, propertyInfo.GetValue(config));
       }
     }
 
     public void Load(){
-      Set(ConfigManager.Instance.Load(m_FilePath, GetType()));
+      Set(ConfigManager.Instance.Load(FilePath, GetType()));
     }
 
     public void Save(){
