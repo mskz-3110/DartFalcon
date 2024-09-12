@@ -57,7 +57,7 @@ namespace DartFalcon {
     }
 
     static private void LogError(string message){
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
       UnityEngine.Debug.LogError(message);
 #else
       System.Console.WriteLine(message);
