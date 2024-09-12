@@ -15,9 +15,11 @@ Fast and low cost configuration reading and writing like dart
 
 ## Usage
 ```cs
+// Using namespace
 using DartFalcon;
 
-private class TestConfig : Config {
+// Inherits from Config class
+public class TestConfig : Config {
 #if UNITY_EDITOR || UNITY_STANDALONE
   public string Name;
   public int Value;
@@ -26,9 +28,17 @@ private class TestConfig : Config {
   public int Value {get; set;}
 #endif
 }
+```
+```cs
+using DartFalcon;
 
+// Set ConfigUtility corresponding to the extension
 ConfigManager.Instance.SetConfigUtility("json", new JsonConfigUtility());
+
+// Load Config
 var testConfig = ConfigManager.Instance.Load<TestConfig>(new FilePath(".", "Test", "json"));
+
+// Save Config
 if (!testConfig.Exists()){
   testConfig.Name = "Test";
   testConfig.Value = 1;
