@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.IO;
 
 namespace DartFalcon {
   public class DartFalconTest {
@@ -19,7 +20,11 @@ namespace DartFalcon {
     }
 
     static public void ConfigTest(string rootPath){
-      var environmentConfig = ConfigManager.Instance.Load<EnvironmentConfig>(new FilePath($"{rootPath}/GlobalConfig", "Environment", "json"));
+      var filePath = FilePath.Create($"{rootPath}/GlobalConfig/Environment.json");
+      Assert(Path.GetRelativePath(rootPath, filePath.DirectoryPath) == "GlobalConfig");
+      Assert(filePath.FileName == "Environment");
+      Assert(filePath.ExtName == "json");
+      var environmentConfig = ConfigManager.Instance.Load<EnvironmentConfig>(filePath);
       if (!environmentConfig.Exists()){
         environmentConfig.LocalConfigPath = "../LocalConfig";
         environmentConfig.Save();

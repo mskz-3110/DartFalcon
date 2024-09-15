@@ -3,6 +3,10 @@ using System.Text;
 
 namespace DartFalcon {
   public class FilePath {
+    static public FilePath Create(string filePath){
+      return new FilePath(Path.GetDirectoryName(filePath), Path.GetFileNameWithoutExtension(filePath), Path.GetExtension(filePath).Remove(0, 1));
+    }
+
     public string DirectoryPath;
 
     public string FileName;
